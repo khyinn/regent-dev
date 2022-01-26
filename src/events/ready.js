@@ -1,5 +1,5 @@
 const { Client } = require('discord.js');
-const { Config } = require('../managers/db.js');
+const { sequelize, Config, Textline } = require('../managers/db.js');
 
 module.exports = {
 	name: 'ready',
@@ -35,5 +35,11 @@ module.exports = {
 			console.log(`✅ Mise à jour des permissions des commandes terminée !`)
 		});
 		console.log(`🟢 ${client.user.username} en ligne !`);
+
+		// activités
+		setInterval(async () => {
+			const activity = await Textline.findOne({ where : { linetype: `games` }, order: sequelize.random() });
+			client.user.setPresence({ activities: [{ name: activity.value }], status: 'idle', type: "PLAYING" });
+		}, 3600000); // 3600000 = 1h
 	},
 };

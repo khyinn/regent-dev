@@ -7,6 +7,7 @@ const sequelize = new Sequelize('regent-db', db_user, db_password, {
 	storage: './src/data/db.sqlite',
 });
 
-const Config = require('../models/config.js')(sequelize, Sequelize.DataTypes);
+const Config = require('../models/config')(sequelize, Sequelize.DataTypes);
+const Textline = require('../models/textline')(sequelize, Sequelize.DataTypes);
 
-module.exports = { Config };
+module.exports = { sequelize, Config, Textline };
