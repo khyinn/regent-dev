@@ -17,6 +17,12 @@ client.commands = new Collection();
 client.commandsArray = [];
 client.cooldowns = new Collection();
 client.menus = new Collection();
+client.moment = require('moment');
+
+process.on('unhandledRejection', error => {
+	const err = error.stack.split("\n")
+	console.error(`${client.moment(Date.now()).format('LLLL')} :\n[Message d'erreur] ${err[0].trim()} \n[Emplacement] ${err[1].trim()}`);
+});
 
 const buttonFolders = readdirSync('./src/buttons');
 const commandFolders = readdirSync('./src/commands');

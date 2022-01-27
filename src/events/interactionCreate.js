@@ -1,4 +1,5 @@
 const { CommandInteraction, Client, MessageEmbed } = require('discord.js');
+const { Config } = require('../managers/db.js');
 
 module.exports = {
 	name: 'interactionCreate',
@@ -51,7 +52,7 @@ module.exports = {
 
 			if (command.disallowMutin) {
 				const mutin_role = await Config.findOne({ where: { name: 'mutin_role'} } );
-				const r = interaction.guild.roles.cache.find(role => role.name === mutin_role);
+				const r = interaction.guild.roles.cache.find(role => role.name === mutin_role.value);
 				if (interaction.member.roles.cache.has(r.id)) {
 					return interaction.reply({ embeds: [
 						new MessageEmbed()
