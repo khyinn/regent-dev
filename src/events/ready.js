@@ -1,6 +1,7 @@
 const { Client } = require('discord.js');
 const { sequelize, Config, Textline, Youtube } = require('../managers/db.js');
 const { YTube } = require('popyt');
+const needle = require('needle');
 
 module.exports = {
 	name: 'ready',
@@ -80,5 +81,31 @@ module.exports = {
 				}
 			}, 60000);
 		}
+
+		// image du jour de la nasa
+		setInterval(async () => {
+			if (client.moment().hours() === 9 && client.moment().minutes() === 0) {
+				const nasa_apikey = await Config.findOne({ where: { name: 'nasa_apikey'} } );
+				const apod_channel = await Config.findOne({ where: { name: 'apod_channel'} } );
+				const chan = await client.channels.cache.get(apod_channel.value);
+				await needle('get', `https://api.nasa.gov/planetary/apod?api_key=${nasa_apikey.value}&hd=True`).then((reply) => {
+					client.moment.locale('fr');
+					const nasa = JSON.parse(reply.body);
+					const response = new MessageEmbed()
+						.setTitle(`Image de la Nasa du ${client.moment().format('LL')}`)
+						.setDescription(`${nasa.title}`)
+						.setColor('RANDOM')
+						.setAuthor({ name: client.user.username, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
+					if (nasa.hdurl) {
+						if (nasa.hdurl.indexOf('youtube') > 0) response.addField('Vidéo', nasa.hdurl);
+						else response.setImage(nasa.hdurl);
+					} else {
+						if (nasa.url.indexOf('youtube') > 0) response.addField('Vidéo', nasa.url);
+						else response.setImage(nasa.url);
+					}
+					chan.send({ embeds: [response] });
+				});
+			}
+		}, 60000);
 	},
 };
