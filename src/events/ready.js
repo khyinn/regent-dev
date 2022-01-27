@@ -110,21 +110,19 @@ module.exports = {
 
 		// image du jour de bonjourmadame
 		setInterval(async () => {
-			if (client.moment().hours() === 12 && client.moment().minutes() === 0) {
+			if (client.moment().hours() === 12 && client.moment().minutes() === 0 && client.moment().isoWeekday() != 7 && client.moment().isoWeekday() != 6) {
 				const charme_channel = await Config.findOne({ where: { name: 'charme_channel'} } );
 				const chan = await client.channels.cache.get(charme_channel.value);
-				if (client.moment().isoWeekday() != 7 && client.moment().isoWeekday() != 6)	{
-					await needle('get', `http://www.bonjourmadame.fr/` + client.moment().format("YYYY/MM/DD")).then((reply) => {
-						const $ = cheerio.load(reply.body);
-						client.moment.locale('fr');
-						const response = new MessageEmbed()
-							.setTitle(`Bonjour madame du ${client.moment().format('LL')}`)
-							.setColor('RANDOM')
-							.setAuthor({ name: client.user.username, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
-							.setImage(`${$(".post").find("img").prop("src").split('?resize')[0]}`);
-						chan.send({ embeds: [response] });
-					});
-				}
+				await needle('get', `http://www.bonjourmadame.fr/` + client.moment().format("YYYY/MM/DD")).then((reply) => {
+					const $ = cheerio.load(reply.body);
+					client.moment.locale('fr');
+					const response = new MessageEmbed()
+						.setTitle(`Bonjour madame du ${client.moment().format('LL')}`)
+						.setColor('RANDOM')
+						.setAuthor({ name: client.user.username, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
+						.setImage(`${$(".post").find("img").prop("src").split('?resize')[0]}`);
+					chan.send({ embeds: [response] });
+				});
 			}
 		}, 60000);
 	},
