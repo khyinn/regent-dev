@@ -17,7 +17,6 @@ module.exports = {
 		await needle('get', `http://chucknorrisfacts.fr/facts/random`).then((reply) => {
 			const $ = cheerio.load(reply.body);
 			let fact = $('.card-text').first().text();
-			client.moment.locale('fr');
 			const response = new MessageEmbed()
 				.setTitle(`🥊 Vérité de Chuck Norris 🥋`)
 				.setColor('RANDOM')
