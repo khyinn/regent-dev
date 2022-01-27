@@ -9,5 +9,6 @@ const sequelize = new Sequelize('regent-db', db_user, db_password, {
 
 const Config = require('../models/config')(sequelize, Sequelize.DataTypes);
 const Textline = require('../models/textline')(sequelize, Sequelize.DataTypes);
+const Youtube = require('../models/youtube')(sequelize, Sequelize.DataTypes);
 
-module.exports = { sequelize, Config, Textline };
+module.exports = { sequelize, Config, Textline, Youtube };
