@@ -49,20 +49,12 @@ module.exports = {
 
 			await channel.bulkDelete(filtered, true).then(async messages => {
 				response.setDescription(`🧹 Suppression de ${messages.size} messages de ${target} effectuée.`);
-				await interaction.reply({ embeds: [response], ephemeral: true }).then(m => {
-					setTimeout(() => {
-						m.delete();
-					}, 5 * 1000)
-				}).catch(() => { });
+				await interaction.reply({ embeds: [response], ephemeral: true });
 			});
 		} else {
 			await channel.bulkDelete(amount, true).then(async messages => {
 				response.setDescription(`🧹 Suppression de ${messages.size} messages de ce salon effectuée.`);
-				await interaction.reply({ embeds: [response], ephemeral: true }).then(m => {
-					setTimeout(() => {
-						m.delete();
-					}, 5 * 1000)
-				}).catch(() => { });
+				await interaction.reply({ embeds: [response], ephemeral: true });
 			});
 		}
 		client.log(client, `🧹 ${interaction.member} a supprimé ${messages.size} message(s) ${text}dans le salon <#${channel.id}> 🧹`);
