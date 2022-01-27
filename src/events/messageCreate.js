@@ -1,5 +1,5 @@
 const { Client, MessageEmbed, Message } = require('discord.js');
-const { Config, Levelsystem } = require('../managers/db.js');
+const { Config, Levelsystem, Textline } = require('../managers/db.js');
 
 module.exports = {
 	name: 'messageCreate',
@@ -33,5 +33,13 @@ module.exports = {
 			}
 			await Levelsystem.update({ xp: newXp, level: curLvl }, { where: { id: message.author.id } });
 		});
+
+		// punchlines
+		let rNumber = Math.random();
+		const cantina_channel = await Config.findOne({ where: { name: 'cantina_channel' } });
+		if (rNumber <= 0.025 && message.channel.id === cantina_channel.value) {
+			const punchline = await Textline.findOne({ where : { linetype: `punchlines` }, order: sequelize.random() });
+			message.channel.send({ content: client.parseString(punchline.value, `<@${message.author.id}>`) });
+		}
 	}
 }
