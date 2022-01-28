@@ -7,6 +7,9 @@ const sequelize = new Sequelize('regent-db', db_user, db_password, {
 	storage: './src/data/db.sqlite',
 });
 
+const Astronaut = require('../models/astronaut')(sequelize, Sequelize.DataTypes);
+const Astronautfight = require('../models/astronautfight')(sequelize, Sequelize.DataTypes);
+const Astronautweapon = require('../models/astronautweapon')(sequelize, Sequelize.DataTypes);
 const Config = require('../models/config')(sequelize, Sequelize.DataTypes);
 const Jcj = require('../models/jcj')(sequelize, Sequelize.DataTypes);
 const Suggestionsjeu = require('../models/suggestionsjeu')(sequelize, Sequelize.DataTypes);
@@ -14,4 +17,4 @@ const Levelsystem = require('../models/levelsystem')(sequelize, Sequelize.DataTy
 const Textline = require('../models/textline')(sequelize, Sequelize.DataTypes);
 const Youtube = require('../models/youtube')(sequelize, Sequelize.DataTypes);
 
-module.exports = { sequelize, Config, Jcj, Levelsystem, Suggestionsjeu, Textline, Youtube };
+module.exports = { sequelize, Astronaut, Astronautfight, Astronautweapon, Config, Jcj, Levelsystem, Suggestionsjeu, Textline, Youtube };
