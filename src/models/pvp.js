@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-	return sequelize.define('jcj', {
+	return sequelize.define('pvp', {
 		id: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			unique: true,
 			primaryKey: true
 		},
-		dernier_jcj: {
+		lastPvp: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			defaultValue: 'undefined'
