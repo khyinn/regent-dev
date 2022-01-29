@@ -15,10 +15,6 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
-		cost: {
-			type: DataTypes.INTEGER,
-			allowNull: false
-		},
 		level: {
 			type: DataTypes.INTEGER,
 			allowNull: false

@@ -26,12 +26,22 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			defaultValue: 0
 		},
+		weapon: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: 1
+		},
+		gears: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue : 5
+		},
 		fights: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 			defaultValue: 0
 		},
-		victoiries: {
+		victories: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 			defaultValue: 0
