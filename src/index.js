@@ -18,6 +18,7 @@ client.commandsArray = [];
 client.cooldowns = new Collection();
 client.menus = new Collection();
 client.moment = require('moment');
+client.queue = new Map();
 
 process.on('unhandledRejection', error => {
 	const err = error.stack.split("\n")
