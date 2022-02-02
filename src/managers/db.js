@@ -12,10 +12,26 @@ const Astronautfight = require('../models/astronautfight')(sequelize, Sequelize.
 const Astronautmarket = require('../models/astronautmarket')(sequelize, Sequelize.DataTypes);
 const Astronautweapon = require('../models/astronautweapon')(sequelize, Sequelize.DataTypes);
 const Config = require('../models/config')(sequelize, Sequelize.DataTypes);
+const Giveaway = require('../models/giveaway')(sequelize, Sequelize.DataTypes);
+const Giveawayuser = require('../models/giveawayuser')(sequelize, Sequelize.DataTypes);
 const Levelsystem = require('../models/levelsystem')(sequelize, Sequelize.DataTypes);
 const Pvp = require('../models/pvp')(sequelize, Sequelize.DataTypes);
 const Suggestionsjeu = require('../models/suggestionsjeu')(sequelize, Sequelize.DataTypes);
 const Textline = require('../models/textline')(sequelize, Sequelize.DataTypes);
 const Youtube = require('../models/youtube')(sequelize, Sequelize.DataTypes);
 
-module.exports = { sequelize, Astronaut, Astronautfight, Astronautmarket, Astronautweapon, Config, Levelsystem, Pvp, Suggestionsjeu, Textline, Youtube };
+module.exports = {
+	sequelize,
+	Astronaut,
+	Astronautfight,
+	Astronautmarket,
+	Astronautweapon,
+	Config,
+	Giveaway,
+	Giveawayuser,
+	Levelsystem,
+	Pvp,
+	Suggestionsjeu,
+	Textline,
+	Youtube
+};

@@ -1,5 +1,5 @@
 const { Client } = require('discord.js');
-const { sequelize, Config, Textline, Youtube } = require('../managers/db.js');
+const { sequelize, Config, Giveaway, Textline, Youtube } = require('../managers/db.js');
 const { YTube } = require('popyt');
 const needle = require('needle');
 
@@ -125,5 +125,16 @@ module.exports = {
 				});
 			}
 		}, 60000);
+
+		// Concours
+		setInterval(async () => {
+			await Giveaway.findAll().then(giveaways => {
+				giveaways.forEach(giveaway => {
+					if (giveaway.ended) return;
+					const date = Number(giveaway.endAt) - Date.now();
+					if (date <= 0) client.majGiveaway(giveaway.id, true, false); else client.majGiveaway(giveaway.id, false, false);
+				});
+			});
+		}, 5000);
 	},
 };
