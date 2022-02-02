@@ -15,12 +15,9 @@ module.exports = {
 		const removed = component.options.filter(() => {
 			return !choices.includes(option.values);
 		});
-		for (const id of removed) {
-			member.roles.remove(id.value);
-		}
-		for (const id of choices) {
-			member.roles.add(id);
-		}
+		for (const id of removed) member.roles.remove(id.value);
+		for (const id of choices) member.roles.add(id);
+
 		await interaction.reply({ content: `✅ Rôles mis à jour !`, ephemeral: true });
 	},
 };

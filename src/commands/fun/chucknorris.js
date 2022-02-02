@@ -24,6 +24,6 @@ module.exports = {
 				.setThumbnail(`https://i.imgur.com/g5qwCJV.jpg`)
 				.setDescription(`${fact}`);
 			interaction.reply({ embeds: [response] });
-		}).catch((error) => { console.log(error)});
+		}).catch((error) => { console.error(error) });
 	},
 };

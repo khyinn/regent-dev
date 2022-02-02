@@ -83,9 +83,8 @@ module.exports = {
 				newGears += 3;
 				responseEnd.addField( `⚙️ Un peu d'aide`, `Tu gagnes **3 pièces détachées**`, true )
 			}
-			else {
-				responseEnd.addField( '\u200b', '\u200b', true )
-			}
+			else responseEnd.addField( '\u200b', '\u200b', true )
+
 			newLevel -= 1;
 			newPoints = ((10 * (newLevel)) + 10) * (newLevel);
 			if (newLevel <= 1) {

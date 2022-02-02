@@ -51,9 +51,7 @@ module.exports = {
 			.setTitle(`${question}`)
 			.setAuthor({ name: client.user.username, iconURL: interaction.guild.iconURL({ dynmanic: true, size: 512 }) })
 			.setColor('RANDOM');
-		for (i = 0; i < choices.length; i++) {
-			response.addField(`${reacts[i]} ${choices[i]}`, '\u200b')
-		}
+		for (i = 0; i < choices.length; i++) response.addField(`${reacts[i]} ${choices[i]}`, '\u200b')
 
 		const msg = await interaction.reply({ embeds: [response], fetchReply: true });
 		for (i = 0; i < choices.length; i++) await msg.react(reacts[i]);

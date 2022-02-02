@@ -24,9 +24,7 @@ module.exports = {
 		const r = interaction.guild.roles.cache.find(role => role.name === mutin_role.value);
 		const tipeur_role = await Config.findOne({ where: { name: 'tipeur_role'} } );
 		const tipeurRole = interaction.guild.roles.cache.find(role => role.name === tipeur_role.value);
-		let reply;
-		let text;
-		let thumb;
+		let reply, text, thumb;
 		if (target.roles.cache.has(tipeurRole.id) || target.premiumSince) {
 			const noway = new MessageEmbed()
 				.setColor('RANDOM')

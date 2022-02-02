@@ -21,27 +21,27 @@ module.exports = {
 		const response = new MessageEmbed()
 			.setTitle('L\'action 💰 Acheter a été choisie.')
 			.setAuthor({ name: client.user.username, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
-        
-        const astronaut = await Astronaut.findOne({ where: { id: userId } });
-        const boughtObject = await Astronautmarket.findOne({ where: { id: parseInt(choice, 10) } });
+		
+		const astronaut = await Astronaut.findOne({ where: { id: userId } });
+		const boughtObject = await Astronautmarket.findOne({ where: { id: parseInt(choice, 10) } });
 
-        if (astronaut.credits < boughtObject.cost) {
-            response.setColor('RED')
+		if (astronaut.credits < boughtObject.cost) {
+			response.setColor('RED')
 				.setDescription('❌ Tu n\'as pas assez de crédits galactiques.')
-        } else {
-            const newCredits = astronaut.credits - boughtObject.cost;
-            if (boughtObject.type === 'gear') {
-                const newGears = astronaut.gears + boughtObject.gearQuantity;
-                await Astronaut.update({ credits: newCredits, gears: newGears }, { where: { id: userId } });
-                response.setColor('AQUA')
+		} else {
+			const newCredits = astronaut.credits - boughtObject.cost;
+			if (boughtObject.type === 'gear') {
+				const newGears = astronaut.gears + boughtObject.gearQuantity;
+				await Astronaut.update({ credits: newCredits, gears: newGears }, { where: { id: userId } });
+				response.setColor('AQUA')
 					.setDescription(`✅ Tu as acheté **${boughtObject.name}** avec succès.`)
-            } else if (boughtObject.type === 'weapon') {
-                const weaponDetails = await Astronautweapon.findOne({ where: { id: boughtObject.weaponId } });
-                await Astronaut.update({ credits: newCredits, weapon: boughtObject.weaponId }, { where: { id: userId } });
-                response.setColor('AQUA')
+			} else if (boughtObject.type === 'weapon') {
+				const weaponDetails = await Astronautweapon.findOne({ where: { id: boughtObject.weaponId } });
+				await Astronaut.update({ credits: newCredits, weapon: boughtObject.weaponId }, { where: { id: userId } });
+				response.setColor('AQUA')
 					.setDescription(`✅ Tu as acheté l'arme suivante : **${weaponDetails.name}**. Celle-ci a été équipée et a remplacé ton arme précédente.`)
-            }
-        }
+			}
+		}
 
 		await interaction.followUp({ content: `<@${userId}>`, embeds: [response] });
 		client.astronautShowActions(interaction, userId, true, true, false, false, false);

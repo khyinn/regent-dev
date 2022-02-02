@@ -259,7 +259,7 @@ module.exports = {
 				var queueSongs = client.queue.get(vc.guild.id).songs;
 				for (let i = queueSongs.length - 1; i > 0; i--) {
 					let j = Math.round(Math.random() * (i + 1));
-					while(j === 0) {
+					while (j === 0) {
 						j = Math.round(Math.random() * (i + 1));
 					}
 					const temp = queueSongs[i];

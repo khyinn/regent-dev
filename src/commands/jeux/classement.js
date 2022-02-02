@@ -32,10 +32,7 @@ module.exports = {
 			.setAuthor({ name: client.user.username, iconURL: interaction.guild.iconURL({ dynmanic: true, size: 512 }) })
 			.setThumbnail(interaction.guild.iconURL({ dynmanic: true, size: 512 }))
 			.setColor('RANDOM');
-		for (var ind = 0; ind < topXp.length; ind++)
-		{
-			response.addField(`${ind + 1}. ${interaction.guild.members.cache.get(topXp[ind].user).user.username}`, `**Niveau : ${topXp[ind].level}, XP : ${topXp[ind].xp}**`);
-		}
+		for (var ind = 0; ind < topXp.length; ind++) response.addField(`${ind + 1}. ${interaction.guild.members.cache.get(topXp[ind].user).user.username}`, `**Niveau : ${topXp[ind].level}, XP : ${topXp[ind].xp}**`);
 
 		const players = await Astronaut.findAll();
 		var playersTopTmp = new Array();
@@ -58,10 +55,7 @@ module.exports = {
 			.setAuthor({ name: client.user.username, iconURL: interaction.guild.iconURL({ dynmanic: true, size: 512 }) })
 			.setThumbnail(interaction.guild.iconURL({ dynmanic: true, size: 512 }))
 			.setColor('RANDOM');
-		for (var ind = 0; ind < playersTop.length; ind++)
-		{
-			response2.addField( `${ind + 1}. ${interaction.guild.members.cache.get(playersTop[ind].user).user.username}`, `**Victoires : ${playersTop[ind].combats} (${playersTop[ind].ratio}%)**` )
-		}
+		for (var ind = 0; ind < playersTop.length; ind++) response2.addField( `${ind + 1}. ${interaction.guild.members.cache.get(playersTop[ind].user).user.username}`, `**Victoires : ${playersTop[ind].combats} (${playersTop[ind].ratio}%)**` )
 
 		await interaction.reply({ embeds: [response, response2] });
 	},

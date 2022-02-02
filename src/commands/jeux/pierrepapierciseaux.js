@@ -22,18 +22,9 @@ module.exports = {
 	async execute(interaction, client) {
 		const choice = interaction.options.getString('choix');
 		const possibleResults = [
-			{
-				objet: 'pierre',
-				emoji: '🪨'
-			},
-			{
-				objet: 'ciseaux',
-				emoji: '✂️'
-			},
-			{
-				objet: 'papier',
-				emoji: '📜'
-			}
+			{ objet: 'pierre', emoji: '🪨' },
+			{ objet: 'ciseaux', emoji: '✂️' },
+			{ objet: 'papier', emoji: '📜' }
 		];
 		const result = possibleResults[Math.floor((Math.random() * possibleResults.length))];
 		const response = new MessageEmbed()
@@ -41,9 +32,8 @@ module.exports = {
 			.setAuthor({ name: client.user.username, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
 			.addField('🧑 Ton choix :', `${possibleResults.filter(o => o.objet == choice)[0].emoji} ${choice}`, true)
 			.addField('🤖 Mon choix', `${result.emoji} ${result.objet}`, true)
-		if (choice == result.objet) {
-			response.setDescription(`⚖️ Égalité ! Pas de vainqueur cette fois-ci !`)
-		} else {
+		if (choice == result.objet) response.setDescription(`⚖️ Égalité ! Pas de vainqueur cette fois-ci !`)
+		else {
 			var winner;
 			var explain;
 			switch(result.objet) {
@@ -51,27 +41,21 @@ module.exports = {
 					if (choice === 'papier') {
 						winner = true;
 						explain = `Le 📜 enveloppe la 🪨 !`;
-					} else {
-						explain = `La 🪨 casse les ✂️ !`;
-					}
+					} else explain = `La 🪨 casse les ✂️ !`;
 					break;
 				}
 				case 'ciseaux' : {
 					if (choice === 'pierre') {
 						winner = true;
 						explain = `La 🪨 casse les ✂️ !`;
-					} else {
-						explain = `Les ✂️ coupent le 📜 !`;
-					}
+					} else explain = `Les ✂️ coupent le 📜 !`;
 					break;
 				}
 				case 'papier' : {
 					if (choice === 'ciseaux') {
 						winner = true;
 						explain = `Les ✂️ coupent le 📜 !`;
-					} else {
-						explain = `Le 📜 enveloppe la 🪨 !`;
-					}
+					} else explain = `Le 📜 enveloppe la 🪨 !`;
 					break;
 				}
 			}

@@ -195,7 +195,7 @@ module.exports = {
 		// Sauvegarde des données
 		await Astronautfight.update({ state: newState, lifePoints: newOpLifePoints }, { where: { userId: userId } });
 		await Astronaut.update({ gears: newGears, level: newLevel, points: newPoints, fights: newFights, defeats: newDefeats, victories: newVictories, lifePoints: newLifePoints }, { where: { id: userId } });
-		if (result)	await Astronaut.update({ points: newOpPoints, level: newOpLevel, weapon: newOpWeapon, lifePoints: newOpLifePoints }, { where: { id: opponent.id } });
+		if (result) await Astronaut.update({ points: newOpPoints, level: newOpLevel, weapon: newOpWeapon, lifePoints: newOpLifePoints }, { where: { id: opponent.id } });
 		await interaction.followUp({ content: `<@${userId}>`, embeds: reply });
 		if (!result) client.astronautShowActions(interaction, userId, false, false, true, true, true);
 	},

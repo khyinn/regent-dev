@@ -30,9 +30,8 @@ module.exports = {
 				.setAuthor({ name: client.user.username, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
 
 			if (!interaction.member.roles.cache.has(allowedRole.id) && !interaction.member.roles.cache.has(tipeurRole.id) && !interaction.member.premiumSince) {
-				if (userpvp.lastPvp != client.moment().format('L')) {
-					await Pvp.update({ lastPvp: client.moment().format('L') }, { where: { id: userId } });
-				} else {
+				if (userpvp.lastPvp != client.moment().format('L')) await Pvp.update({ lastPvp: client.moment().format('L') }, { where: { id: userId } });
+				else {
 					response.setColor('RED')
 						.setDescription(`⏳ Tu as déjà combattu aujourd'hui, reviens demain pour combattre à nouveau !`)
 					return await interaction.reply({ content: `<@${userId}>`, embeds: [response] });
