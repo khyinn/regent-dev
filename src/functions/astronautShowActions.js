@@ -42,8 +42,8 @@ module.exports = (client) => {
 					let weaponDetails = await Astronautweapon.findOne({ where: { id: weapon.weaponId } });
 					options.push({
 						label: weaponDetails.name,
-						descriptions: `Coût: ${weapon.cost}, Attaque: ${weaponDetails.attack}, Niveau: ${weaponDetails.level}, Modificateur: ${weaponDetails.modifier}`,
-						value: weapon.id
+						descriptions: `Coût: ${weaponDetails.cost}, Attaque: ${weaponDetails.attack}, Niveau: ${weaponDetails.level}, Modificateur: ${weaponDetails.modifier}`,
+						value: weaponDetails.id
 					})
 				});
 			});

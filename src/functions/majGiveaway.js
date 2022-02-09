@@ -21,7 +21,7 @@ module.exports = (client) => {
 			.setAuthor({ name: giveaway.author, iconURL: giveaway.authorURL })
 			.setColor('GOLD')
 			.setDescription(`**${giveaway.winnerCount} gagnant${giveaway.winnerCount > 1 ? 's': ''}** tiré${giveaway.winnerCount > 1 ? 's': ''} au sort pour gagner **${giveaway.prize}**.\nCliquez sur le bouton pour participer !\nTerminé : **<t:${Math.round(giveaway.endAt / 1000)}:R>** ${client.progressBar(giveaway.endAt - Date.now(), giveaway.endAt - giveaway.startAt)}\nParticipant(s) : **${users.count}**`)
-			.setFooter({ text: `ID : ${giveaway.id}`, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
+			.setFooter({ text: `ID : ${id}`, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
 			.setTimestamp(giveaway.timestamp)
 		if (end) {
 			if (winners.length) {
@@ -34,7 +34,7 @@ module.exports = (client) => {
 			}
 			await Giveaway.update({ ended: true, winners: JSON.stringify(winners) }, { where: { id: id } });
 		}
-		if (giveaway.messageId)	await channel.messages.fetch(giveaway.messageId).then(msg => {
+		if (giveaway.messageId) await channel.messages.fetch(giveaway.messageId).then(msg => {
 			if (giveaway.ended || end) msg.edit({ embeds: [response], components: [] }); else msg.edit({ embeds: [response] });
 		});
 	};
