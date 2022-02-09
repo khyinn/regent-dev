@@ -74,7 +74,7 @@ module.exports = {
 				const magicdefenseemoji = client.emojis.cache.get('916050517426331730');
 
 				const DxdConfigRaw = await Config.findOne({ where: { name: 'dxdConfig' } });
-				const { DxdConfig } = JSON.parse(DxdConfigRaw.get('value'));
+				const { DxdConfig } = JSON.parse(DxdConfigRaw.value);
 
 				if (interaction.options.getSubcommand() === 'info') {
 					const allCardsCount = await Dxdcard.count();
@@ -122,11 +122,11 @@ module.exports = {
 				}
 
 				if (interaction.options.getSubcommand() === 'booster') {
-					if (player.get('credits') >= 500) {
-						player.credits = player.get('credits') - 500;
+					if (player.credits >= 500) {
+						player.credits = player.credits - 500;
 						let currentPage = 0;
 						let messageContentList = [];
-						let currentdusts = player.get('dusts');
+						let currentdusts = player.dusts;
 						for (let i = 0; i < 5; i++) {
 							const probability = Math.floor(Math.random() * 100) + 1;
 							const droprater = DxdConfig.rarityrdroprate;
@@ -155,10 +155,10 @@ module.exports = {
 							await Dxdcard.findOne({ where: { rarity: newcardrarity }, order: sequelize.randomm() }).then(async newcard => {
 								let hasCard = false;
 								player.cards.forEach(card => {
-									if (card.get('cardId') === newcard.get('cardId')) hasCard = true;
+									if (card.cardId === newcard.cardId) hasCard = true;
 								});
-								messageContent.cardName = newcard.get('name');
-								messageContent.cardId = newcard.get('cardId');
+								messageContent.cardName = newcard.name;
+								messageContent.cardId = newcard.cardId;
 								messageContent.cardURI = `./images/dxdcards/${messageContent.cardId} - ${messageContent.cardName}.png`;
 								messageContent.hasCard = hasCard;
 							})
@@ -188,7 +188,7 @@ module.exports = {
 					const cardId = interaction.options.getString('cardid');
 					await Dxdcard.findOne({ where: { cardId: cardId } }).then(card => {
 						let classemoji, rarityemoji, dusts;
-						switch (card.get('class')) {
+						switch (card.class) {
 							case 'Roi':
 								classemoji = kingemoji;
 								break;
@@ -208,7 +208,7 @@ module.exports = {
 								classemoji = pawnemoji;
 								break;
 						}
-						switch (card.get('rarity')) {
+						switch (card.rarity) {
 							case 'Commune':
 								rarityemoji = raritycemoji;
 								dusts = DxdConfig.raritycdusts;
@@ -227,16 +227,16 @@ module.exports = {
 								break;
 						}
 						const response = new MessageEmbed()
-							.setTitle(`${heartwingsemoji} ${card.get('name')} ${heartwingsemoji}`)
+							.setTitle(`${heartwingsemoji} ${card.name} ${heartwingsemoji}`)
 							.setAuthor({ name: client.user.username, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
 							.setColor('RANDOM')
-							.setImage(`./images/dxdcards/${card.get('cardId')} - ${card.get('name')}.png`)
-							.addField( `Classe`, `${classemoji} ${card.get('class')}`, true )
-							.addField( `Rareté`, `${rarityemoji} ${card.get('rarity').replace('SuperRare', 'Super rare').replace('UltraRare', 'Ultra rare')}`, true )
+							.setImage(`./images/dxdcards/${card.cardId} - ${card.name}.png`)
+							.addField( `Classe`, `${classemoji} ${card.class}`, true )
+							.addField( `Rareté`, `${rarityemoji} ${card.rarity.replace('SuperRare', 'Super rare').replace('UltraRare', 'Ultra rare')}`, true )
 							.addField( `Poussière démoniaque`, `${dusts} ✨`, true )
-							.addField( `Attaque`, `${magicattackemoji} ${card.get('attack')}`, true )
-							.addField( `Défense`, `${magicdefenseemoji} ${card.get('defense')}`, true )
-							.setFooter({ text: `ID: ${card.get('cardId')}`, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) });
+							.addField( `Attaque`, `${magicattackemoji} ${card.attack}`, true )
+							.addField( `Défense`, `${magicdefenseemoji} ${card.defense}`, true )
+							.setFooter({ text: `ID: ${card.cardId}`, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) });
 						await interaction.reply({ content: `Informations sur une carte`, embeds: [response] });
 					}).catch(err => {
 						interaction.reply({ content: `❌ Cet identifiant de carte n'existe pas ou la connexion avec la base de données est indisponible.`, ephemeral: true });
