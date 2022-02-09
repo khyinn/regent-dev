@@ -12,6 +12,11 @@ const Astronautfight = require('../models/astronautfight')(sequelize, Sequelize.
 const Astronautmarket = require('../models/astronautmarket')(sequelize, Sequelize.DataTypes);
 const Astronautweapon = require('../models/astronautweapon')(sequelize, Sequelize.DataTypes);
 const Config = require('../models/config')(sequelize, Sequelize.DataTypes);
+const Dxdcard = require('../models/dxdcard')(sequelize, Sequelize.DataTypes);
+const Dxdplayer = require('../models/dxdplayer')(sequelize, Sequelize.DataTypes);
+const Dxdplayercard = require('../models/dxdplayercard')(sequelize, Sequelize.DataTypes);
+Dxdcard.belongsToMany(Dxdplayer, { through: Dxdplayercard, as: 'cards', foreignKey: 'cardId' });
+Dxdplayer.belongsToMany(Dxdcard, { through: Dxdplayercard, as: 'players', foreignKey: 'userId' });
 const Giveaway = require('../models/giveaway')(sequelize, Sequelize.DataTypes);
 const Giveawayuser = require('../models/giveawayuser')(sequelize, Sequelize.DataTypes);
 const Levelsystem = require('../models/levelsystem')(sequelize, Sequelize.DataTypes);
@@ -27,6 +32,9 @@ module.exports = {
 	Astronautmarket,
 	Astronautweapon,
 	Config,
+	Dxdcard,
+	Dxdplayer,
+	Dxdplayercard,
 	Giveaway,
 	Giveawayuser,
 	Levelsystem,
