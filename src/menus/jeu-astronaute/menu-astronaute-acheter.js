@@ -25,21 +25,21 @@ module.exports = {
 		const astronaut = await Astronaut.findOne({ where: { id: userId } });
 		const boughtObject = await Astronautmarket.findOne({ where: { id: parseInt(choice, 10) } });
 
-		if (astronaut.credits < boughtObject.cost) {
+		if (astronaut.get('credits') < boughtObject.get('cost')) {
 			response.setColor('RED')
 				.setDescription('❌ Tu n\'as pas assez de crédits galactiques.')
 		} else {
-			const newCredits = astronaut.credits - boughtObject.cost;
-			if (boughtObject.type === 'gear') {
-				const newGears = astronaut.gears + boughtObject.gearQuantity;
+			const newCredits = astronaut.get('credits') - boughtObject.get('cost');
+			if (boughtObject.get('type') === 'gear') {
+				const newGears = astronaut.get('gears') + boughtObject.get('gearQuantity');
 				await Astronaut.update({ credits: newCredits, gears: newGears }, { where: { id: userId } });
 				response.setColor('AQUA')
 					.setDescription(`✅ Tu as acheté **${boughtObject.name}** avec succès.`)
-			} else if (boughtObject.type === 'weapon') {
+			} else if (boughtObject.get('type') === 'weapon') {
 				const weaponDetails = await Astronautweapon.findOne({ where: { id: boughtObject.weaponId } });
-				await Astronaut.update({ credits: newCredits, weapon: boughtObject.weaponId }, { where: { id: userId } });
+				await Astronaut.update({ credits: newCredits, weapon: boughtObject.get('weaponId') }, { where: { id: userId } });
 				response.setColor('AQUA')
-					.setDescription(`✅ Tu as acheté l'arme suivante : **${weaponDetails.name}**. Celle-ci a été équipée et a remplacé ton arme précédente.`)
+					.setDescription(`✅ Tu as acheté l'arme suivante : **${weaponDetails.get('name')}**. Celle-ci a été équipée et a remplacé ton arme précédente.`)
 			}
 		}
 
