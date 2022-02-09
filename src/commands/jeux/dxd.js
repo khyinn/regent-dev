@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Client, CommandInteraction, MessageEmbed } = require('discord.js');
 const { sequelize, Config, Dxdcard, Dxdplayer } = require('../../managers/db.js');
+const paginationEmbed = require('../../modules/djs-pagination-with-buttons.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -124,63 +125,58 @@ module.exports = {
 				if (interaction.options.getSubcommand() === 'booster') {
 					if (player.credits >= 500) {
 						player.credits = player.credits - 500;
-						let currentPage = 0;
-						let messageContentList = [];
+						let pages = [];
 						let currentdusts = player.dusts;
 						for (let i = 0; i < 5; i++) {
 							const probability = Math.floor(Math.random() * 100) + 1;
 							const droprater = DxdConfig.rarityrdroprate;
 							const dropratesr = DxdConfig.raritysrdroprate;
 							const droprateur = DxdConfig.rarityurdroprate;
-							let messageContent = {};
-							let newcardrarity;
+							let newcardrarity, newcarddusts, rarityemoji;
 
 							if (probability <= droprateur) {
 								newcardrarity = 'UltraRare';
-								messageContent.newcarddusts = DxdConfig.rarityurdusts;
-								messageContent.rarityemoji = rarityuremoji;
+								newcarddusts = DxdConfig.rarityurdusts;
+								rarityemoji = rarityuremoji;
 							} else if (probability <= dropratesr) {
 								newcardrarity = 'SuperRare';
-								messageContent.newcarddusts = DxdConfig.raritysrdusts;
-								messageContent.rarityemoji = raritysremoji;
+								newcarddusts = DxdConfig.raritysrdusts;
+								rarityemoji = raritysremoji;
 							} else if (probability <= droprater) {
 								newcardrarity = 'Rare';
-								messageContent.newcarddusts = DxdConfig.rarityrdusts;
-								messageContent.rarityemoji = rarityremoji;
+								newcarddusts = DxdConfig.rarityrdusts;
+								rarityemoji = rarityremoji;
 							} else  {
 								newcardrarity = 'Commune';
-								messageContent.newcarddusts = DxdConfig.raritycdusts;
-								messageContent.rarityemoji = raritycemoji;
+								newcarddusts = DxdConfig.raritycdusts;
+								rarityemoji = raritycemoji;
 							}
 							await Dxdcard.findOne({ where: { rarity: newcardrarity }, order: sequelize.randomm() }).then(async newcard => {
+								const response = new MessageEmbed()
+									.setTitle( `${heartwingsemoji} Booster ouvert ! ${heartwingsemoji}` )
+									.setAuthor({ name: interaction.guild.members.cache.get(target).user.username, iconURL: interaction.guild.members.cache.get(target).user.avatarURL({ dynmanic: true, size: 512 }) })
+									.setColor('RANDOM')
+									.setImage( `./images/dxdcards/${newcard.cardId} - ${newcard.name}.png` )
+									.addField( `🃏 Félicitations !`, `Tu as gagné une carte ${rarityemoji} ${newcard.name} !` )
 								let hasCard = false;
 								player.cards.forEach(card => {
-									if (card.cardId === newcard.cardId) hasCard = true;
+									if (card.cardId === newcard.cardId) {
+										hasCard = true;
+										currentdusts = currentdusts + newcarddusts;
+									}
 								});
-								messageContent.cardName = newcard.name;
-								messageContent.cardId = newcard.cardId;
-								messageContent.cardURI = `./images/dxdcards/${messageContent.cardId} - ${messageContent.cardName}.png`;
-								messageContent.hasCard = hasCard;
+								if (hasCard) response.addField( `⚠️ Doublon !`, `Tu as déjà cette carte, tu gagnes ${newcarddusts}✨ en compensation.`)
+								else player.addCard(newcard);
+								pages.push(response);
 							})
 							.catch(err => console.error(err));
-
-							if (hasCard) {
-								currentdusts = currentdusts + messageContent.newcarddusts;
-							} else {
-								await Dxdcard.findByPk(messageContent.cardId).then(card => {
-									player.addCard(card);
-								})
-							}
-							messageContentList.push(messageContent);
 						}
 						player.dusts = currentdusts;
 						player.save();
 
-						const response = new MessageEmbed()
-							.setTitle(`${heartwingsemoji} ${interaction.guild.members.cache.get(target).user.username} ${heartwingsemoji}`)
-							.setAuthor({ name: client.user.username, iconURL: client.user.avatarURL({ dynmanic: true, size: 512 }) })
-							.setColor('RANDOM')
-
+						const prevbutton = new MessageButton().setCustomId('previousbtn').setLabel('◀️ Précédente').setStyle('SECONDARY');
+						const nextbutton = new MessageButton().setCustomId('nextbtn').setLabel('Suivante ▶️').setStyle('SECONDARY');
+						paginationEmbed(interaction, pages, [prevbutton, nextbutton]);
 					} else interaction.reply({ content: `❌ Tu n'as pas assez de crédits démoniaques pour ouvrir un booster.`, ephemeral: true });
 				}
 
