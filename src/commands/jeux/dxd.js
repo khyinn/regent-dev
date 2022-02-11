@@ -60,22 +60,21 @@ module.exports = {
 					.setDescription('✅ Joueur réinitialisé !')
 				await interaction.reply({ content: `<@${id}>`, embeds: [reinit] });
 			} else {
-				const raritycemoji = client.emojis.cache.get('916703129414795345');
-				const rarityremoji = client.emojis.cache.get('916703151447502890');
-				const raritysremoji = client.emojis.cache.get('916703169424293989');
-				const rarityuremoji = client.emojis.cache.get('916703185241006101');
-				const kingemoji = client.emojis.cache.get('916052200881524758');
-				const queenemoji = client.emojis.cache.get('916052230782734367');
-				const rookemoji = client.emojis.cache.get('916052284209774602');
-				const knightemoji = client.emojis.cache.get('916052303159644171');
-				const bishopemoji = client.emojis.cache.get('916052455240925276');
-				const pawnemoji = client.emojis.cache.get('916052478380871730');
-				const heartwingsemoji = client.emojis.cache.get('916050166551826503');
-				const magicattackemoji = client.emojis.cache.get('916050396181594152');
-				const magicdefenseemoji = client.emojis.cache.get('916050517426331730');
-
 				const DxdConfigRaw = await Config.findOne({ where: { name: 'dxdConfig' } });
 				const { DxdConfig } = JSON.parse(DxdConfigRaw.value);
+				const raritycemoji = client.emojis.cache.get(DxdConfig.raritycemoji); // 916703129414795345
+				const rarityremoji = client.emojis.cache.get(DxdConfig.rarityremoji); // 916703151447502890
+				const raritysremoji = client.emojis.cache.get(DxdConfig.raritysremoji); // 916703169424293989
+				const rarityuremoji = client.emojis.cache.get(DxdConfig.rarityuremoji); // 916703185241006101
+				const kingemoji = client.emojis.cache.get(DxdConfig.kingemoji); // 916052200881524758
+				const queenemoji = client.emojis.cache.get(DxdConfig.queenemoji); // 916052230782734367
+				const rookemoji = client.emojis.cache.get(DxdConfig.rookemoji); // 916052284209774602
+				const knightemoji = client.emojis.cache.get(DxdConfig.knightemoji); // 916052303159644171
+				const bishopemoji = client.emojis.cache.get(DxdConfig.bishopemoji); // 916052455240925276
+				const pawnemoji = client.emojis.cache.get(DxdConfig.pawnemoji); // 916052478380871730
+				const heartwingsemoji = client.emojis.cache.get(DxdConfig.heartwingsemoji); // 916050166551826503
+				const magicattackemoji = client.emojis.cache.get(DxdConfig.magicattackemoji); // 916050396181594152
+				const magicdefenseemoji = client.emojis.cache.get(DxdConfig.magicdefenseemoji); // 916050517426331730
 
 				if (interaction.options.getSubcommand() === 'info') {
 					const allCardsCount = await Dxdcard.count();
@@ -124,7 +123,6 @@ module.exports = {
 
 				if (interaction.options.getSubcommand() === 'booster') {
 					if (player.credits >= 500) {
-						player.credits = player.credits - 500;
 						let pages = [];
 						let currentdusts = player.dusts;
 						for (let i = 0; i < 5; i++) {
@@ -134,15 +132,15 @@ module.exports = {
 							const droprateur = DxdConfig.rarityurdroprate;
 							let newcardrarity, newcarddusts, rarityemoji;
 
-							if (probability <= droprateur) {
+							if (probability <= droprateur + 1) {
 								newcardrarity = 'UltraRare';
 								newcarddusts = DxdConfig.rarityurdusts;
 								rarityemoji = rarityuremoji;
-							} else if (probability <= dropratesr) {
+							} else if (probability <= dropratesr + 1) {
 								newcardrarity = 'SuperRare';
 								newcarddusts = DxdConfig.raritysrdusts;
 								rarityemoji = raritysremoji;
-							} else if (probability <= droprater) {
+							} else if (probability <= droprater + 1) {
 								newcardrarity = 'Rare';
 								newcarddusts = DxdConfig.rarityrdusts;
 								rarityemoji = rarityremoji;
@@ -172,6 +170,7 @@ module.exports = {
 							.catch(err => console.error(err));
 						}
 						player.dusts = currentdusts;
+						player.credits = player.credits - 500;
 						player.save();
 
 						const prevbutton = new MessageButton().setCustomId('previousbtn').setLabel('◀️ Précédente').setStyle('SECONDARY');
