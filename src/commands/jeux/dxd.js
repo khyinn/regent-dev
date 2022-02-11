@@ -127,20 +127,21 @@ module.exports = {
 						let currentdusts = player.dusts;
 						for (let i = 0; i < 5; i++) {
 							const probability = Math.floor(Math.random() * 100) + 1;
+							const probabilityCredits = Math.floor(Math.random() * 100) + 1;
 							const droprater = DxdConfig.rarityrdroprate;
 							const dropratesr = DxdConfig.raritysrdroprate;
 							const droprateur = DxdConfig.rarityurdroprate;
 							let newcardrarity, newcarddusts, rarityemoji;
 
-							if (probability <= droprateur + 1) {
+							if (probability < droprateur + 1) {
 								newcardrarity = 'UltraRare';
 								newcarddusts = DxdConfig.rarityurdusts;
 								rarityemoji = rarityuremoji;
-							} else if (probability <= dropratesr + 1) {
+							} else if (probability < dropratesr + 1) {
 								newcardrarity = 'SuperRare';
 								newcarddusts = DxdConfig.raritysrdusts;
 								rarityemoji = raritysremoji;
-							} else if (probability <= droprater + 1) {
+							} else if (probability < droprater + 1) {
 								newcardrarity = 'Rare';
 								newcarddusts = DxdConfig.rarityrdusts;
 								rarityemoji = rarityremoji;
@@ -163,7 +164,11 @@ module.exports = {
 										currentdusts = currentdusts + newcarddusts;
 									}
 								});
-								if (hasCard) response.addField( `⚠️ Doublon !`, `Tu as déjà cette carte, tu gagnes ${newcarddusts}✨ en compensation.`)
+								if (hasCard) response.addField( `⚠️ Doublon !`, `Tu as déjà cette carte, tu gagnes ${newcarddusts} ✨ en compensation.`)
+								if (probabilityCredits < DxdConfig.creditsdroprate + 1) {
+									player.credits = player.credits + DxdConfig.creditsbonus;
+									response.addField( `💰 Jackpot !`, `Tu gagnes ${DxdConfig.creditsbonus} 💰 en bonus !`)
+								}
 								else player.addCard(newcard);
 								pages.push(response);
 							})
